@@ -10,7 +10,7 @@ const NEURON_POSITIONS = [
 ];
 
 // Central AI hub node — connects all neurons
-const AI_NODE = { x: 50, y: 52 };
+const AI_NODE = { x: 50, y: 88 };
 const AI_COLOR = 'hsl(45, 100%, 65%)';
 
 function getSynapsePath(from, to) {
@@ -324,7 +324,7 @@ export default function NeuralCanvas({ onNeuronClick, activeNeuron }) {
           {/* Label */}
           <text
             x={AI_NODE.x}
-            y={AI_NODE.y + 5.5}
+            y={AI_NODE.y - 5}
             textAnchor="middle"
             className="neuron-label ai-hub-label"
             fill={AI_COLOR}
