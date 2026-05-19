@@ -1,0 +1,136 @@
+.contact {
+  text-align: center;
+  padding-bottom: var(--space-2xl);
+  position: relative;
+}
+
+.contact-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(
+    circle,
+    hsla(265, 90%, 65%, 0.06) 0%,
+    hsla(185, 100%, 55%, 0.03) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.contact-content {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: var(--space-lg);
+}
+
+.contact-desc {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 550px;
+  margin: 0 auto var(--space-3xl);
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-4xl);
+  flex-wrap: wrap;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg) var(--space-2xl);
+  border-radius: var(--radius-lg);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all var(--duration-normal) var(--ease-out);
+  min-width: 200px;
+  justify-content: center;
+}
+
+.contact-link:hover {
+  color: var(--text-primary);
+  border-color: var(--border-glow);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px hsla(230, 50%, 5%, 0.4);
+}
+
+.contact-link-icon {
+  display: flex;
+  align-items: center;
+}
+
+.contact-link-arrow {
+  color: var(--text-muted);
+  transition: transform var(--duration-fast);
+}
+
+.contact-link:hover .contact-link-arrow {
+  transform: translateX(4px);
+  color: var(--neuron-frontend);
+}
+
+/* Footer */
+.footer {
+  padding-top: var(--space-2xl);
+  border-top: 1px solid var(--border-subtle);
+  position: relative;
+  z-index: 1;
+}
+
+.footer-text {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.footer-heart {
+  color: var(--neuron-backend);
+}
+
+.footer-separator {
+  margin: 0 var(--space-sm);
+  opacity: 0.4;
+}
+
+.footer-year {
+  color: var(--text-secondary);
+}
+
+.footer-tech {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-link {
+    width: 100%;
+    max-width: 300px;
+  }
+}

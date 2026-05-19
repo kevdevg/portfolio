@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="g1" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="hsl(185, 100%, 55%)" />
+      <stop offset="100%" stop-color="hsl(265, 90%, 65%)" />
+    </radialGradient>
+  </defs>
+  <rect width="100" height="100" rx="20" fill="hsl(230, 25%, 8%)" />
+  <!-- Neural nodes -->
+  <circle cx="30" cy="35" r="6" fill="hsl(185, 100%, 55%)" opacity="0.8" />
+  <circle cx="70" cy="30" r="5" fill="hsl(320, 80%, 60%)" opacity="0.8" />
+  <circle cx="25" cy="70" r="5" fill="hsl(265, 90%, 65%)" opacity="0.8" />
+  <circle cx="72" cy="68" r="6" fill="hsl(155, 85%, 50%)" opacity="0.8" />
+  <!-- Connections -->
+  <line x1="30" y1="35" x2="70" y2="30" stroke="hsla(210, 100%, 70%, 0.3)" stroke-width="1" />
+  <line x1="30" y1="35" x2="25" y2="70" stroke="hsla(210, 100%, 70%, 0.3)" stroke-width="1" />
+  <line x1="70" y1="30" x2="72" y2="68" stroke="hsla(210, 100%, 70%, 0.3)" stroke-width="1" />
+  <line x1="25" y1="70" x2="72" y2="68" stroke="hsla(210, 100%, 70%, 0.3)" stroke-width="1" />
+  <line x1="30" y1="35" x2="72" y2="68" stroke="hsla(210, 100%, 70%, 0.2)" stroke-width="0.5" />
+  <line x1="70" y1="30" x2="25" y2="70" stroke="hsla(210, 100%, 70%, 0.2)" stroke-width="0.5" />
+</svg>
