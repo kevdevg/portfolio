@@ -126,7 +126,6 @@ export default function TechStack() {
       vx: p.vx,
       vy: p.vy,
     }));
-    orbElemsRef.current = [];
   }, [initialPositions]);
 
   // Animation loop with requestAnimationFrame
@@ -186,15 +185,21 @@ export default function TechStack() {
     rafRef.current = requestAnimationFrame(() => animate(now));
   }, [filtered]);
 
-  // Start/stop animation when visible
+  // Start/stop animation when visible — delay start to let entry transition play
   useEffect(() => {
+    let timeoutId;
     if (isVisible) {
-      rafRef.current = requestAnimationFrame(() => animate(performance.now()));
+      // Wait for entry animation (staggered delays up to ~1.8s) before starting physics
+      const maxDelay = filtered.length * 50 + 600;
+      timeoutId = setTimeout(() => {
+        rafRef.current = requestAnimationFrame(() => animate(performance.now()));
+      }, maxDelay);
     }
     return () => {
+      clearTimeout(timeoutId);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [isVisible, animate]);
+  }, [isVisible, animate, filtered.length]);
 
   return (
     <section className="techstack section" id="techstack" ref={ref}>
