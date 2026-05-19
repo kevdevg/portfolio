@@ -112,30 +112,6 @@ export const projects = [
     type: 'Open Source',
     org: 'Personal',
   },
-  {
-    id: 'ai-proxy',
-    name: 'AI Proxy Worker',
-    description: 'Cloudflare Worker acting as a secure proxy for OpenRouter AI requests — reusable across multiple apps with API key protection.',
-    areas: ['backend', 'devops'],
-    tech: ['TypeScript', 'Cloudflare Workers', 'Wrangler'],
-    stars: 0,
-    prs: 0,
-    url: 'https://github.com/kevdevg/ai-proxy-worker',
-    type: 'Personal',
-    org: 'Personal',
-  },
-  {
-    id: 'bienvenida-madres',
-    name: 'Bienvenida Madres',
-    description: 'Interactive Mother\'s Day event hub — live dedications feed, multiplayer Parchís game, photo album, and real-time quiz with WebSocket sync.',
-    areas: ['frontend', 'backend'],
-    tech: ['React', 'Vite', 'WebSocket', 'SQLite', 'Node.js'],
-    stars: 0,
-    prs: 0,
-    url: 'https://github.com/kevdevg/bienvenida-madres',
-    type: 'Personal',
-    org: 'Personal',
-  },
 ];
 
 export const experience = [

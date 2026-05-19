@@ -42,11 +42,8 @@ export default function Projects() {
 
       <div className="project-grid">
         {filtered.map((project, i) => (
-          <a
+          <div
             key={project.id}
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
             className={`project-card glass-card reveal ${isVisible ? 'visible' : ''}`}
             style={{
               transitionDelay: `${(i % 6) * 80 + 200}ms`,
@@ -99,11 +96,14 @@ export default function Projects() {
                   {project.prs} PRs
                 </span>
               )}
-              <span className="project-arrow">→</span>
             </div>
-          </a>
+          </div>
         ))}
       </div>
+
+      <p className={`projects-confidentiality reveal ${isVisible ? 'visible' : ''} reveal-delay-2`}>
+        🔒 Some projects cannot be displayed here due to confidentiality agreements.
+      </p>
     </section>
   );
 }
