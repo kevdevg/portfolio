@@ -243,3 +243,47 @@
     font-size: 2.2rem;
   }
 }
+
+/* ── AI Hub Node ── */
+
+.ai-hub-node {
+  pointer-events: none;
+}
+
+.ai-hub-glow {
+  animation: aiHubPulse 4s ease-in-out infinite;
+}
+
+.ai-hub-core {
+  filter: drop-shadow(0 0 3px hsl(45, 100%, 65%));
+  animation: aiCoreGlow 3s ease-in-out infinite;
+}
+
+.ai-hub-center {
+  animation: aiCenterPulse 2.5s ease-in-out infinite;
+}
+
+.ai-hub-label {
+  paint-order: stroke;
+  stroke: var(--bg-void);
+  stroke-width: 0.4px;
+}
+
+@keyframes aiHubPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes aiCoreGlow {
+  0%, 100% { filter: drop-shadow(0 0 2px hsl(45, 100%, 65%)); }
+  50% { filter: drop-shadow(0 0 5px hsl(45, 100%, 65%)); }
+}
+
+@keyframes aiCenterPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.ai-synapse {
+  stroke-dasharray: 0.8 0.4;
+}

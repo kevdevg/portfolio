@@ -9,6 +9,10 @@ const NEURON_POSITIONS = [
   { x: 72, y: 72 },  // DevOps — bottom right
 ];
 
+// Central AI hub node — connects all neurons
+const AI_NODE = { x: 50, y: 52 };
+const AI_COLOR = 'hsl(45, 100%, 65%)';
+
 function getSynapsePath(from, to) {
   const mx = (from.x + to.x) / 2;
   const my = (from.y + to.y) / 2;
@@ -34,6 +38,16 @@ function getAllSynapses() {
   }
   return synapses;
 }
+
+// Synapses connecting AI hub to each skill neuron
+function getAISynapses() {
+  return NEURON_POSITIONS.map((pos, i) => ({
+    toIndex: i,
+    path: getSynapsePath(AI_NODE, pos),
+  }));
+}
+
+const AI_SYNAPSES = getAISynapses();
 
 const SYNAPSES = getAllSynapses();
 
@@ -125,6 +139,14 @@ export default function NeuralCanvas({ onNeuronClick, activeNeuron }) {
               <stop offset="100%" stopColor={skill.color} stopOpacity="0" />
             </radialGradient>
           ))}
+          {/* AI hub gradient */}
+          <radialGradient id="glow-ai" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor={AI_COLOR} stopOpacity="0.5" />
+            <stop offset="100%" stopColor={AI_COLOR} stopOpacity="0" />
+          </radialGradient>
+          <filter id="blur-ai">
+            <feGaussianBlur stdDeviation="1.5" />
+          </filter>
           {skills.map((skill) => (
             <filter key={`filter-${skill.id}`} id={`blur-${skill.id}`}>
               <feGaussianBlur stdDeviation="1.5" />
@@ -156,6 +178,33 @@ export default function NeuralCanvas({ onNeuronClick, activeNeuron }) {
                   strokeWidth="0.6"
                   opacity="0.15"
                   filter={`url(#blur-${fromSkill.id})`}
+                />
+              )}
+            </g>
+          );
+        })}
+
+        {/* AI hub synapses — connecting center to all neurons */}
+        {AI_SYNAPSES.map((aiSynapse, i) => {
+          const isActive = hoveredNeuron === aiSynapse.toIndex;
+          const targetSkill = skills[aiSynapse.toIndex];
+          return (
+            <g key={`ai-syn-${i}`}>
+              <path
+                d={aiSynapse.path}
+                fill="none"
+                stroke={isActive ? AI_COLOR : 'hsla(45, 30%, 30%, 0.18)'}
+                strokeWidth={isActive ? 0.3 : 0.12}
+                className={`synapse-path ai-synapse ${isActive ? 'synapse-active' : ''}`}
+              />
+              {isActive && (
+                <path
+                  d={aiSynapse.path}
+                  fill="none"
+                  stroke={AI_COLOR}
+                  strokeWidth="0.5"
+                  opacity="0.12"
+                  filter="url(#blur-ai)"
                 />
               )}
             </g>
@@ -242,6 +291,51 @@ export default function NeuralCanvas({ onNeuronClick, activeNeuron }) {
             </g>
           );
         })}
+
+        {/* Central AI hub node — non-interactive */}
+        <g className="neuron-group ai-hub-node">
+          {/* Outer glow */}
+          <circle
+            cx={AI_NODE.x}
+            cy={AI_NODE.y}
+            r={3.5}
+            fill="url(#glow-ai)"
+            className="neuron-glow ai-hub-glow"
+          />
+          {/* Core ring */}
+          <circle
+            cx={AI_NODE.x}
+            cy={AI_NODE.y}
+            r={2}
+            fill="var(--bg-void)"
+            stroke={AI_COLOR}
+            strokeWidth="0.25"
+            className="neuron-core ai-hub-core"
+          />
+          {/* Inner dot */}
+          <circle
+            cx={AI_NODE.x}
+            cy={AI_NODE.y}
+            r={0.7}
+            fill={AI_COLOR}
+            opacity="0.85"
+            className="neuron-center ai-hub-center"
+          />
+          {/* Label */}
+          <text
+            x={AI_NODE.x}
+            y={AI_NODE.y + 5.5}
+            textAnchor="middle"
+            className="neuron-label ai-hub-label"
+            fill={AI_COLOR}
+            fontSize="2"
+            fontFamily="var(--font-display)"
+            fontWeight="600"
+            opacity="0.7"
+          >
+            🤖 AI
+          </text>
+        </g>
       </svg>
 
       {/* Scroll indicator */}
