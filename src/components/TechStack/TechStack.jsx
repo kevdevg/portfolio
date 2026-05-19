@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useIntersection } from '../../hooks/useIntersection';
 import './TechStack.css';
 
@@ -71,27 +71,30 @@ const CATEGORY_LABELS = {
   devops: 'DevOps',
 };
 
+function seededRandom(seed) {
+  const x = Math.sin(seed * 9301 + 49297) * 49297;
+  return x - Math.floor(x);
+}
+
 export default function TechStack() {
   const [ref, isVisible] = useIntersection();
   const [activeGroup, setActiveGroup] = useState('All');
   const [hoveredTech, setHoveredTech] = useState(null);
+  const constellationRef = useRef(null);
+  const orbStatesRef = useRef([]);
+  const rafRef = useRef(null);
+  const orbElemsRef = useRef([]);
 
   const filtered = activeGroup === 'All'
     ? TECHNOLOGIES
     : TECHNOLOGIES.filter(t => t.group === activeGroup);
 
-  // Seeded pseudo-random for deterministic positions
-  function seededRandom(seed) {
-    const x = Math.sin(seed * 9301 + 49297) * 49297;
-    return x - Math.floor(x);
-  }
-
-  // Grid-based distribution with jitter for even spacing
-  const orbPositions = useMemo(() => {
+  // Grid-based initial positions
+  const initialPositions = useMemo(() => {
     const count = filtered.length;
-    const cols = Math.ceil(Math.sqrt(count * 1.8)); // wider than tall
+    const cols = Math.ceil(Math.sqrt(count * 1.8));
     const rows = Math.ceil(count / cols);
-    const cellW = 80 / cols; // leave 10% padding on each side
+    const cellW = 80 / cols;
     const cellH = 80 / rows;
 
     return filtered.map((tech, i) => {
@@ -101,21 +104,97 @@ export default function TechStack() {
       const jitterX = (seededRandom(seed) - 0.5) * cellW * 0.6;
       const jitterY = (seededRandom(seed + 99) - 0.5) * cellH * 0.6;
 
-      // Unique slow drift parameters per orb
-      const driftX = (seededRandom(seed + 1) - 0.5) * 20; // px
-      const driftY = (seededRandom(seed + 2) - 0.5) * 16;
-      const driftDur = 10 + seededRandom(seed + 3) * 14; // 10-24s
+      // Random velocity direction, speed ~18-35 px/s
+      const angle = seededRandom(seed + 200) * Math.PI * 2;
+      const speed = 18 + seededRandom(seed + 300) * 17;
 
       return {
         x: 10 + col * cellW + cellW / 2 + jitterX,
         y: 10 + row * cellH + cellH / 2 + jitterY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
         delay: i * 50,
-        driftX,
-        driftY,
-        driftDur,
       };
     });
   }, [filtered]);
+
+  // Initialize orb physics states when filtered list changes
+  useEffect(() => {
+    orbStatesRef.current = initialPositions.map(p => ({
+      x: p.x,
+      y: p.y,
+      vx: p.vx,
+      vy: p.vy,
+    }));
+    orbElemsRef.current = [];
+  }, [initialPositions]);
+
+  // Animation loop with requestAnimationFrame
+  const animate = useCallback((prevTime) => {
+    const now = performance.now();
+    const dt = Math.min((now - prevTime) / 1000, 0.05); // cap delta to avoid jumps
+
+    const states = orbStatesRef.current;
+    const container = constellationRef.current;
+    if (!container || states.length === 0) {
+      rafRef.current = requestAnimationFrame(() => animate(now));
+      return;
+    }
+
+    const containerW = container.offsetWidth;
+    const containerH = container.offsetHeight;
+
+    for (let i = 0; i < states.length; i++) {
+      const s = states[i];
+      const size = 28 + (filtered[i]?.level || 3) * 10;
+      const halfSize = size / 2;
+
+      // Update position
+      s.x += (s.vx * dt / containerW) * 100;
+      s.y += (s.vy * dt / containerH) * 100;
+
+      // Convert to pixel bounds for collision
+      const pxX = (s.x / 100) * containerW;
+      const pxY = (s.y / 100) * containerH;
+
+      // Bounce off left/right walls
+      if (pxX - halfSize <= 0) {
+        s.x = (halfSize / containerW) * 100;
+        s.vx = Math.abs(s.vx);
+      } else if (pxX + halfSize >= containerW) {
+        s.x = ((containerW - halfSize) / containerW) * 100;
+        s.vx = -Math.abs(s.vx);
+      }
+
+      // Bounce off top/bottom walls
+      if (pxY - halfSize <= 0) {
+        s.y = (halfSize / containerH) * 100;
+        s.vy = Math.abs(s.vy);
+      } else if (pxY + halfSize >= containerH) {
+        s.y = ((containerH - halfSize) / containerH) * 100;
+        s.vy = -Math.abs(s.vy);
+      }
+
+      // Apply position via ref (no re-render)
+      const el = orbElemsRef.current[i];
+      if (el) {
+        el.style.left = `${s.x}%`;
+        el.style.top = `${s.y}%`;
+      }
+    }
+
+    rafRef.current = requestAnimationFrame(() => animate(now));
+  }, [filtered]);
+
+  // Start/stop animation when visible
+  useEffect(() => {
+    if (isVisible) {
+      rafRef.current = requestAnimationFrame(() => animate(performance.now()));
+    }
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [isVisible, animate]);
 
   return (
     <section className="techstack section" id="techstack" ref={ref}>
@@ -140,7 +219,10 @@ export default function TechStack() {
       </div>
 
       {/* Constellation field */}
-      <div className={`constellation reveal ${isVisible ? 'visible' : ''} reveal-delay-2`}>
+      <div
+        className={`constellation reveal ${isVisible ? 'visible' : ''} reveal-delay-2`}
+        ref={constellationRef}
+      >
         {/* Background glow effects */}
         <div className="constellation-glow constellation-glow-1" />
         <div className="constellation-glow constellation-glow-2" />
@@ -149,7 +231,7 @@ export default function TechStack() {
 
         {/* Tech orbs */}
         {filtered.map((tech, i) => {
-          const pos = orbPositions[i];
+          const pos = initialPositions[i];
           if (!pos) return null;
           const size = 28 + tech.level * 10;
           const isHovered = hoveredTech === tech.name;
@@ -157,6 +239,7 @@ export default function TechStack() {
           return (
             <div
               key={tech.name}
+              ref={el => { orbElemsRef.current[i] = el; }}
               className={`tech-orb ${isVisible ? 'tech-orb-visible' : ''} ${isHovered ? 'tech-orb-hovered' : ''}`}
               style={{
                 left: `${pos.x}%`,
@@ -165,9 +248,6 @@ export default function TechStack() {
                 height: `${size}px`,
                 '--orb-color': CATEGORY_COLORS[tech.category],
                 '--orb-delay': `${pos.delay}ms`,
-                '--drift-x': `${pos.driftX}px`,
-                '--drift-y': `${pos.driftY}px`,
-                '--drift-dur': `${pos.driftDur}s`,
               }}
               onMouseEnter={() => setHoveredTech(tech.name)}
               onMouseLeave={() => setHoveredTech(null)}
@@ -211,3 +291,4 @@ export default function TechStack() {
     </section>
   );
 }
+

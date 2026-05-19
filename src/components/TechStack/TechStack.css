@@ -145,24 +145,11 @@
     box-shadow var(--duration-normal) var(--ease-out),
     border-color var(--duration-normal) var(--ease-out);
   transition-delay: var(--orb-delay);
-
-  /* Slow organic drift — each orb gets unique --drift-x, --drift-y, --drift-dur */
-  animation: orbDrift var(--drift-dur, 14s) ease-in-out infinite;
-  animation-play-state: paused;
 }
 
 .tech-orb-visible {
   opacity: 1;
   scale: 1;
-  animation-play-state: running;
-}
-
-@keyframes orbDrift {
-  0%   { transform: translate(-50%, -50%) translate(0, 0); }
-  25%  { transform: translate(-50%, -50%) translate(var(--drift-x, 8px), calc(var(--drift-y, 6px) * -0.5)); }
-  50%  { transform: translate(-50%, -50%) translate(calc(var(--drift-x, 8px) * -0.3), var(--drift-y, 6px)); }
-  75%  { transform: translate(-50%, -50%) translate(calc(var(--drift-x, 8px) * -0.7), calc(var(--drift-y, 6px) * -0.8)); }
-  100% { transform: translate(-50%, -50%) translate(0, 0); }
 }
 
 .tech-orb:hover,
