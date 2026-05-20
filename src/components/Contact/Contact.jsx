@@ -1,4 +1,5 @@
 import { useIntersection } from '../../hooks/useIntersection';
+import { trackOutboundClick, trackSectionView } from '../../utils/analytics';
 import './Contact.css';
 
 const LINKS = [
@@ -33,7 +34,7 @@ const LINKS = [
 ];
 
 export default function Contact() {
-  const [ref, isVisible] = useIntersection();
+  const [ref, isVisible] = useIntersection({ onVisible: () => trackSectionView('contact') });
 
   return (
     <section className="contact section" id="contact" ref={ref}>
@@ -54,6 +55,7 @@ export default function Contact() {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackOutboundClick(link.url, link.label)}
               className={`contact-link reveal ${isVisible ? 'visible' : ''}`}
               style={{ transitionDelay: `${i * 100 + 300}ms` }}
             >

@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useIntersection } from '../../hooks/useIntersection';
+import { trackTechFilter, trackTechHover, trackSectionView } from '../../utils/analytics';
 import './TechStack.css';
 
 /*
@@ -77,7 +78,7 @@ function seededRandom(seed) {
 }
 
 export default function TechStack() {
-  const [ref, isVisible] = useIntersection();
+  const [ref, isVisible] = useIntersection({ onVisible: () => trackSectionView('techstack') });
   const [activeGroup, setActiveGroup] = useState('All');
   const [hoveredTech, setHoveredTech] = useState(null);
   const constellationRef = useRef(null);
@@ -216,7 +217,7 @@ export default function TechStack() {
           <button
             key={group}
             className={`techstack-filter ${activeGroup === group ? 'techstack-filter-active' : ''}`}
-            onClick={() => setActiveGroup(group)}
+            onClick={() => { setActiveGroup(group); trackTechFilter(group); }}
           >
             {group}
           </button>
@@ -254,7 +255,7 @@ export default function TechStack() {
                 '--orb-color': CATEGORY_COLORS[tech.category],
                 '--orb-delay': `${pos.delay}ms`,
               }}
-              onMouseEnter={() => setHoveredTech(tech.name)}
+              onMouseEnter={() => { setHoveredTech(tech.name); trackTechHover(tech.name, tech.category); }}
               onMouseLeave={() => setHoveredTech(null)}
             >
               <span className="tech-orb-icon">{tech.icon}</span>

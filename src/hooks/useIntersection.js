@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 export function useIntersection(options = {}) {
+  const { onVisible, ...observerOptions } = options;
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -12,10 +13,11 @@ export function useIntersection(options = {}) {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+          if (onVisible) onVisible();
           observer.unobserve(element);
         }
       },
-      { threshold: 0.1, ...options }
+      { threshold: 0.1, ...observerOptions }
     );
 
     observer.observe(element);

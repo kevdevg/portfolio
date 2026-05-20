@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useIntersection } from '../../hooks/useIntersection';
 import { projects } from '../../data/projects';
 import { skills } from '../../data/skills';
+import { trackProjectFilter, trackSectionView } from '../../utils/analytics';
 import './Projects.css';
 
 const FILTERS = [
@@ -11,7 +12,12 @@ const FILTERS = [
 
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [ref, isVisible] = useIntersection();
+  const [ref, isVisible] = useIntersection({ onVisible: () => trackSectionView('projects') });
+
+  const handleFilter = (id) => {
+    setActiveFilter(id);
+    trackProjectFilter(id);
+  };
 
   const filtered = activeFilter === 'all'
     ? projects
@@ -31,7 +37,7 @@ export default function Projects() {
           <button
             key={filter.id}
             className={`project-filter ${activeFilter === filter.id ? 'project-filter-active' : ''}`}
-            onClick={() => setActiveFilter(filter.id)}
+            onClick={() => handleFilter(filter.id)}
             style={activeFilter === filter.id && filter.color ? { '--filter-color': filter.color } : {}}
           >
             {filter.icon && <span className="filter-icon">{filter.icon}</span>}
