@@ -2,7 +2,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
+  gap: var(--space-xl);
+  margin-bottom: var(--space-3xl);
 }
 
 .timeline-item {
@@ -16,32 +17,18 @@
   align-items: center;
   flex-shrink: 0;
   width: 20px;
-  padding-top: var(--space-xl);
+  padding-top: 1.75rem;
 }
 
 .timeline-dot {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: var(--synapse-pulse);
-  box-shadow: 0 0 12px var(--synapse-glow), 0 0 4px var(--synapse-pulse);
+  background: var(--neuron-frontend);
+  box-shadow: 0 0 12px var(--synapse-glow);
   flex-shrink: 0;
   position: relative;
   z-index: 1;
-}
-
-.timeline-dot::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px solid hsla(200, 100%, 80%, 0.2);
-  animation: dotPulse 3s ease-in-out infinite;
-}
-
-@keyframes dotPulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.5); opacity: 0; }
 }
 
 .timeline-line {
@@ -49,18 +36,14 @@
   flex-grow: 1;
   background: linear-gradient(
     180deg,
-    var(--synapse-glow) 0%,
-    transparent 100%
+    rgba(56, 189, 248, 0.35) 0%,
+    rgba(255, 255, 255, 0.06) 100%
   );
   margin-top: var(--space-sm);
 }
 
 .timeline-content {
   flex-grow: 1;
-}
-
-.timeline-content:hover {
-  transform: translateY(-2px);
 }
 
 .timeline-header {
@@ -74,36 +57,50 @@
 
 .timeline-role {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 4px;
 }
 
+.timeline-company-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .timeline-company {
   font-family: var(--font-mono);
   font-size: 0.8rem;
+  font-weight: 500;
   color: var(--neuron-frontend);
   transition: opacity var(--duration-fast);
 }
 
 .timeline-company:hover {
-  opacity: 0.7;
+  opacity: 0.78;
+}
+
+.timeline-location {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 .timeline-period {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--text-muted);
+  font-size: 0.74rem;
+  color: var(--text-secondary);
   padding: 4px 12px;
   border-radius: var(--radius-full);
-  background: var(--bg-elevated);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-subtle);
   white-space: nowrap;
 }
 
 .timeline-desc {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: var(--text-secondary);
   line-height: 1.7;
   margin-bottom: var(--space-md);
@@ -112,22 +109,23 @@
 .timeline-highlights {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 0.55rem;
   margin-bottom: var(--space-lg);
 }
 
 .timeline-highlight {
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   color: var(--text-secondary);
-  padding-left: var(--space-md);
+  line-height: 1.65;
+  padding-left: 1.15rem;
   position: relative;
 }
 
 .timeline-highlight::before {
-  content: '▸';
+  content: '▹';
   position: absolute;
   left: 0;
-  color: var(--synapse-pulse);
+  color: var(--neuron-frontend);
 }
 
 .timeline-areas {
@@ -142,11 +140,138 @@
   padding: 3px 10px;
   border-radius: var(--radius-full);
   background: color-mix(in srgb, var(--badge-color) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--badge-color) 25%, transparent);
+  border: 1px solid color-mix(in srgb, var(--badge-color) 26%, transparent);
   color: var(--badge-color);
 }
 
+/* ── Education & Languages Bento ── */
+
+.education-bento {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-lg);
+}
+
+.education-card,
+.languages-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.education-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--neuron-web3);
+}
+
+.education-heading {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--text-primary);
+}
+
+.education-degrees-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.education-degree-item {
+  padding: 0.95rem 1.1rem;
+  border-radius: var(--radius-md);
+  background: rgba(6, 8, 13, 0.55);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.degree-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.degree-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.degree-status {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--neuron-devops);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.degree-inst {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+.degree-inst span {
+  color: var(--text-muted);
+}
+
+.degree-focus {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.languages-sub {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.languages-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: auto;
+}
+
+.language-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(6, 8, 13, 0.55);
+  border: 1px solid var(--border-subtle);
+}
+
+.language-name {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.language-level {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--neuron-frontend);
+}
+
 /* Responsive */
+@media (max-width: 900px) {
+  .education-bento {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .timeline-node {
     display: none;
@@ -154,9 +279,5 @@
 
   .timeline-item {
     gap: 0;
-  }
-
-  .timeline-header {
-    flex-direction: column;
   }
 }

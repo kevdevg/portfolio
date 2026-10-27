@@ -1,47 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* ============================================
-   DESIGN SYSTEM — Neural Portfolio
+   DESIGN SYSTEM — Dark Editorial & Bento Architecture
+   Inspired by Linear / Vercel / Raycast Precision UI
    ============================================ */
 
 :root {
-  /* Background */
-  --bg-void: hsl(230, 25%, 5%);
-  --bg-surface: hsl(230, 20%, 10%);
-  --bg-elevated: hsl(230, 18%, 14%);
-  --bg-card: hsla(230, 20%, 12%, 0.6);
+  /* Obsidian Precision Surfaces (60-30-10 Rule) */
+  --bg-void: #06080D;
+  --bg-surface: #0B0E17;
+  --bg-elevated: #101522;
+  --bg-card: rgba(15, 20, 32, 0.72);
+  --bg-card-hover: rgba(20, 27, 43, 0.88);
+  --bg-glass: rgba(11, 14, 23, 0.82);
 
-  /* Neuronas */
-  --neuron-frontend: hsl(185, 100%, 55%);
-  --neuron-backend: hsl(320, 80%, 60%);
-  --neuron-web3: hsl(265, 90%, 65%);
-  --neuron-devops: hsl(155, 85%, 50%);
+  /* Architectural Pillars (Neurons) */
+  --neuron-frontend: hsl(190, 95%, 55%);
+  --neuron-backend: hsl(330, 85%, 62%);
+  --neuron-web3: hsl(265, 90%, 68%);
+  --neuron-devops: hsl(158, 85%, 48%);
 
-  /* Neuronas — muted */
-  --neuron-frontend-muted: hsla(185, 100%, 55%, 0.15);
-  --neuron-backend-muted: hsla(320, 80%, 60%, 0.15);
-  --neuron-web3-muted: hsla(265, 90%, 65%, 0.15);
-  --neuron-devops-muted: hsla(155, 85%, 50%, 0.15);
+  /* Muted Pillar Tints */
+  --neuron-frontend-muted: hsla(190, 95%, 55%, 0.14);
+  --neuron-backend-muted: hsla(330, 85%, 62%, 0.14);
+  --neuron-web3-muted: hsla(265, 90%, 68%, 0.14);
+  --neuron-devops-muted: hsla(158, 85%, 48%, 0.14);
 
-  /* Sinapsis */
-  --synapse-glow: hsla(210, 100%, 70%, 0.3);
-  --synapse-pulse: hsla(200, 100%, 80%, 0.6);
+  /* Synaptic & Surgical Accent */
+  --synapse-glow: hsla(195, 100%, 65%, 0.28);
+  --synapse-pulse: hsl(190, 95%, 60%);
+  --accent-primary: #38BDF8;
+  --accent-emerald: #10B981;
 
-  /* Text */
-  --text-primary: hsl(210, 20%, 95%);
-  --text-secondary: hsl(220, 15%, 65%);
-  --text-muted: hsl(220, 10%, 45%);
+  /* Editorial Text Hierarchy */
+  --text-primary: #F3F6FC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
 
-  /* Borders */
-  --border-subtle: hsla(220, 20%, 40%, 0.2);
-  --border-glow: hsla(210, 100%, 70%, 0.15);
+  /* 1px Precision Hairline Borders & Inner Highlights */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --border-glow: rgba(56, 189, 248, 0.28);
+  --inner-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
 
   /* Typography */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Spacing */
+  /* Spacing Rhythm */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
@@ -49,21 +56,21 @@
   --space-xl: 2rem;
   --space-2xl: 3rem;
   --space-3xl: 4rem;
-  --space-4xl: 6rem;
+  --space-4xl: 6.5rem;
 
-  /* Radius */
+  /* Concentric Optical Radii */
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* Transitions */
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --duration-fast: 200ms;
-  --duration-normal: 400ms;
-  --duration-slow: 700ms;
+  /* Natural Motion Physics */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 160ms;
+  --duration-normal: 280ms;
+  --duration-slow: 600ms;
 }
 
 /* ============================================
@@ -80,6 +87,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-void);
 }
 
 body {
@@ -88,10 +96,13 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.07), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 85% 20%, rgba(168, 85, 247, 0.04), transparent 65%);
 }
 
 ::selection {
-  background: hsla(210, 100%, 70%, 0.3);
+  background: rgba(56, 189, 248, 0.25);
   color: var(--text-primary);
 }
 
@@ -117,21 +128,32 @@ img {
   display: block;
 }
 
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
 /* ============================================
-   TYPOGRAPHY
+   EDITORIAL TYPOGRAPHY
    ============================================ */
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
 }
 
 .text-gradient {
-  background: linear-gradient(135deg,
-    var(--neuron-frontend),
-    var(--neuron-web3),
-    var(--neuron-backend)
+  background: linear-gradient(
+    135deg,
+    #FFFFFF 0%,
+    var(--neuron-frontend) 45%,
+    var(--neuron-web3) 95%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -139,56 +161,75 @@ h1, h2, h3, h4 {
 }
 
 /* ============================================
-   UTILITIES
+   SECTION & BENTO UTILITIES
    ============================================ */
 
 .section {
   padding: var(--space-4xl) var(--space-xl);
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
   position: relative;
 }
 
-.section-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin-bottom: var(--space-lg);
-  position: relative;
-  display: inline-block;
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--neuron-frontend);
+  margin-bottom: var(--space-sm);
 }
 
-.section-title::after {
+.section-eyebrow::before {
   content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 60px;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--synapse-pulse);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--neuron-frontend);
+  box-shadow: 0 0 8px var(--neuron-frontend);
+}
+
+.section-title {
+  font-size: clamp(2rem, 4.2vw, 2.85rem);
+  margin-bottom: var(--space-sm);
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+   display: block;
 }
 
 .section-subtitle {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--text-secondary);
-  max-width: 600px;
+  max-width: 64ch;
+  line-height: 1.65;
   margin-bottom: var(--space-3xl);
 }
 
-/* Glass card */
+/* Precision Bento Card */
 .glass-card {
   background: var(--bg-card);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-subtle);
+  box-shadow: var(--inner-highlight), 0 12px 32px -8px rgba(0, 0, 0, 0.5);
   border-radius: var(--radius-lg);
   padding: var(--space-xl);
-  transition: all var(--duration-normal) var(--ease-out);
+  transition:
+    border-color var(--duration-normal) var(--ease-out),
+    background-color var(--duration-normal) var(--ease-out),
+    transform var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
 }
 
 .glass-card:hover {
-  border-color: var(--border-glow);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px hsla(230, 50%, 5%, 0.4);
+  border-color: var(--border-strong);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--inner-highlight), 0 20px 40px -12px rgba(0, 0, 0, 0.65);
 }
 
 /* ============================================
@@ -197,9 +238,10 @@ h1, h2, h3, h4 {
 
 .reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity var(--duration-slow) var(--ease-out),
-              transform var(--duration-slow) var(--ease-out);
+  transform: translateY(20px);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
 }
 
 .reveal.visible {
@@ -207,11 +249,11 @@ h1, h2, h3, h4 {
   transform: translateY(0);
 }
 
-.reveal-delay-1 { transition-delay: 100ms; }
-.reveal-delay-2 { transition-delay: 200ms; }
-.reveal-delay-3 { transition-delay: 300ms; }
-.reveal-delay-4 { transition-delay: 400ms; }
-.reveal-delay-5 { transition-delay: 500ms; }
+.reveal-delay-1 { transition-delay: 60ms; }
+.reveal-delay-2 { transition-delay: 120ms; }
+.reveal-delay-3 { transition-delay: 180ms; }
+.reveal-delay-4 { transition-delay: 240ms; }
+.reveal-delay-5 { transition-delay: 300ms; }
 
 /* ============================================
    SCROLLBAR
@@ -226,10 +268,16 @@ h1, h2, h3, h4 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsla(220, 20%, 30%, 0.5);
+  background: rgba(255, 255, 255, 0.14);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsla(220, 20%, 40%, 0.6);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: var(--space-3xl) var(--space-md);
+  }
 }

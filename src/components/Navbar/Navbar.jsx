@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
+import { trackOutboundClick } from '../../utils/analytics';
 import './Navbar.css';
 
 const NAV_ITEMS = [
-  { id: 'hero', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'hero', label: 'Overview' },
+  { id: 'about', label: 'Architecture' },
+  { id: 'techstack', label: 'Stack' },
+  { id: 'projects', label: 'Systems' },
+  { id: 'experience', label: 'Track Record' },
 ];
 
 export default function Navbar() {
@@ -14,20 +15,24 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState('hero');
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const cvUrl = `${import.meta.env.BASE_URL}Kevin_Guevara_CV.pdf`;
+
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 30);
 
-      const sections = NAV_ITEMS.map(item => ({
-        id: item.id,
-        el: document.getElementById(item.id),
-      })).filter(s => s.el);
+      const allSections = [...NAV_ITEMS, { id: 'contact', label: 'Contact' }]
+        .map(item => ({
+          id: item.id,
+          el: document.getElementById(item.id),
+        }))
+        .filter(s => s.el);
 
       const scrollPos = window.scrollY + window.innerHeight / 3;
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        if (sections[i].el.offsetTop <= scrollPos) {
-          setActiveSection(sections[i].id);
+      for (let i = allSections.length - 1; i >= 0; i--) {
+        if (allSections[i].el.offsetTop <= scrollPos) {
+          setActiveSection(allSections[i].id);
           break;
         }
       }
@@ -46,47 +51,68 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
-      <div className="navbar-inner">
-        <button className="navbar-logo" onClick={() => scrollTo('hero')}>
-          <span className="logo-bracket">&lt;</span>
-          <span className="logo-text">KG</span>
-          <span className="logo-bracket">/&gt;</span>
-        </button>
+    <header className={`navbar-wrapper ${scrolled ? 'navbar-scrolled' : ''}`}>
+      <nav className="navbar-pill" aria-label="Primary Navigation">
+        <div className="navbar-brand-group">
+          <button className="navbar-logo" onClick={() => scrollTo('hero')}>
+            <span className="logo-mark">KG</span>
+            <span className="logo-divider">//</span>
+            <span className="logo-role">SENIOR.SWE</span>
+          </button>
+
+          <div className="navbar-status" title="Open to Remote Senior & Staff Engineering Roles">
+            <span className="status-dot" />
+            <span className="status-text">Available for Senior / Staff Roles</span>
+          </div>
+        </div>
 
         <button
           className={`navbar-hamburger ${menuOpen ? 'open' : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
+          aria-label="Toggle navigation menu"
+          aria-expanded={menuOpen}
         >
           <span /><span /><span />
         </button>
 
-        <ul className={`navbar-links ${menuOpen ? 'navbar-links-open' : ''}`}>
-          {NAV_ITEMS.map(item => (
-            <li key={item.id}>
-              <button
-                className={`navbar-link ${activeSection === item.id ? 'navbar-link-active' : ''}`}
-                onClick={() => scrollTo(item.id)}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
-          <li>
+        <div className={`navbar-menu ${menuOpen ? 'navbar-menu-open' : ''}`}>
+          <ul className="navbar-links">
+            {NAV_ITEMS.map(item => (
+              <li key={item.id}>
+                <button
+                  className={`navbar-link ${activeSection === item.id ? 'navbar-link-active' : ''}`}
+                  onClick={() => scrollTo(item.id)}
+                >
+                  {item.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <div className="navbar-actions">
             <a
-              href="https://github.com/kevdevg"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="navbar-github"
+              href={cvUrl}
+              download="Kevin_Guevara_CV.pdf"
+              onClick={() => trackOutboundClick(cvUrl, 'Navbar Download CV')}
+              className="navbar-btn-secondary"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
+              <span>Download CV</span>
             </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+
+            <button
+              className="navbar-btn-primary"
+              onClick={() => scrollTo('contact')}
+            >
+              <span>Let&apos;s Talk</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
   );
 }
