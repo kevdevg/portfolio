@@ -1,32 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-/* ============================================
-   DESIGN SYSTEM — Dark Editorial & Bento Architecture
-   Inspired by Linear / Vercel / Raycast Precision UI
-   ============================================ */
+/* ============================================================
+   OBSIDIAN & NEON NEURON DESIGN SYSTEM
+   Preserved Brand Palette + Mathematical Scrollytelling Chrome
+   ============================================================ */
 
 :root {
+  /* iOS Safari & Feathered Chrome Tokens */
+  --hero-chrome-bg: #06080D;
+  --surface-dark-bg: #06080D;
+
   /* Obsidian Precision Surfaces (60-30-10 Rule) */
   --bg-void: #06080D;
   --bg-surface: #0B0E17;
   --bg-elevated: #101522;
   --bg-card: rgba(15, 20, 32, 0.72);
   --bg-card-hover: rgba(20, 27, 43, 0.88);
-  --bg-glass: rgba(11, 14, 23, 0.82);
+  --bg-glass: rgba(11, 14, 23, 0.84);
 
-  /* Architectural Pillars (Neurons) */
+  /* Architectural Pillars (Neurons — Exact Preserved Palette) */
   --neuron-frontend: hsl(190, 95%, 55%);
   --neuron-backend: hsl(330, 85%, 62%);
   --neuron-web3: hsl(265, 90%, 68%);
   --neuron-devops: hsl(158, 85%, 48%);
+  --neuron-amber: hsl(45, 100%, 64%);
 
   /* Muted Pillar Tints */
   --neuron-frontend-muted: hsla(190, 95%, 55%, 0.14);
   --neuron-backend-muted: hsla(330, 85%, 62%, 0.14);
   --neuron-web3-muted: hsla(265, 90%, 68%, 0.14);
   --neuron-devops-muted: hsla(158, 85%, 48%, 0.14);
+  --neuron-amber-muted: hsla(45, 100%, 64%, 0.14);
 
-  /* Synaptic & Surgical Accent */
+  /* Synaptic & Surgical Accents */
   --synapse-glow: hsla(195, 100%, 65%, 0.28);
   --synapse-pulse: hsl(190, 95%, 60%);
   --accent-primary: #38BDF8;
@@ -39,7 +43,7 @@
 
   /* 1px Precision Hairline Borders & Inner Highlights */
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
+  --border-strong: rgba(255, 255, 255, 0.15);
   --border-glow: rgba(56, 189, 248, 0.28);
   --inner-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
 
@@ -48,36 +52,34 @@
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Spacing Rhythm */
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2rem;
-  --space-2xl: 3rem;
-  --space-3xl: 4rem;
-  --space-4xl: 6.5rem;
+  /* Spacing Rhythm & Layout */
+  --container-max: 1240px;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --nav-height: 72px;
 
-  /* Concentric Optical Radii */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
+  /* Concentric Optical Radii (R_outer = R_inner + Padding) */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
   --radius-full: 9999px;
 
   /* Natural Motion Physics */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-fast: 160ms;
-  --duration-normal: 280ms;
-  --duration-slow: 600ms;
+  --duration-fast: 150ms;
+  --duration-normal: 260ms;
+  --duration-slow: 560ms;
 }
 
-/* ============================================
+/* ============================================================
    RESET & BASE
-   ============================================ */
+   ============================================================ */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -87,18 +89,19 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg-void);
+  background-color: var(--hero-chrome-bg);
+  color-scheme: dark;
 }
 
 body {
   font-family: var(--font-body);
-  background: var(--bg-void);
+  background-color: var(--bg-void);
   color: var(--text-primary);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: clip;
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.07), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 85% 20%, rgba(168, 85, 247, 0.04), transparent 65%);
+    radial-gradient(ellipse 75% 45% at 50% -8%, rgba(56, 189, 248, 0.075), transparent 68%),
+    radial-gradient(ellipse 55% 38% at 88% 18%, rgba(168, 100, 253, 0.05), transparent 65%);
 }
 
 ::selection {
@@ -119,27 +122,42 @@ button {
   color: inherit;
 }
 
-ul, ol {
+:focus-visible {
+  outline: 2px solid var(--neuron-frontend);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+ul,
+ol {
   list-style: none;
 }
 
-img {
-  max-width: 100%;
+img,
+svg {
   display: block;
+  max-width: 100%;
+}
+
+section[id] {
+  scroll-margin-top: 96px;
 }
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-/* ============================================
-   EDITORIAL TYPOGRAPHY
-   ============================================ */
+/* ============================================================
+   EDITORIAL TYPOGRAPHY & SHARED LAYOUT PRIMITIVES
+   ============================================================ */
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1.12;
+  line-height: 1.08;
   letter-spacing: -0.03em;
   text-wrap: balance;
 }
@@ -152,26 +170,22 @@ p {
   background: linear-gradient(
     135deg,
     #FFFFFF 0%,
-    var(--neuron-frontend) 45%,
-    var(--neuron-web3) 95%
+    var(--neuron-frontend) 48%,
+    var(--neuron-web3) 96%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ============================================
-   SECTION & BENTO UTILITIES
-   ============================================ */
-
-.section {
-  padding: var(--space-4xl) var(--space-xl);
-  max-width: 1240px;
+.container {
+  width: 100%;
+  max-width: var(--container-max);
   margin: 0 auto;
-  position: relative;
+  padding-inline: var(--gutter);
 }
 
-.section-eyebrow {
+.eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -181,83 +195,43 @@ p {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--neuron-frontend);
-  margin-bottom: var(--space-sm);
 }
 
-.section-eyebrow::before {
-  content: '';
+.eyebrow-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--neuron-frontend);
-  box-shadow: 0 0 8px var(--neuron-frontend);
+  background: currentColor;
+  box-shadow: 0 0 10px currentColor;
+  flex-shrink: 0;
 }
 
-.section-title {
-  font-size: clamp(2rem, 4.2vw, 2.85rem);
-  margin-bottom: var(--space-sm);
+.section-heading {
+  font-size: clamp(1.95rem, 3.8vw, 2.85rem);
   color: var(--text-primary);
-  letter-spacing: -0.03em;
-   display: block;
+  margin-top: 0.65rem;
 }
 
-.section-subtitle {
-  font-size: 1.05rem;
+.section-lead {
+  font-size: 1.02rem;
   color: var(--text-secondary);
-  max-width: 64ch;
-  line-height: 1.65;
-  margin-bottom: var(--space-3xl);
+  max-width: 56ch;
+  line-height: 1.62;
+  margin-top: 0.75rem;
 }
 
-/* Precision Bento Card */
-.glass-card {
+.surface-panel {
   background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   border: 1px solid var(--border-subtle);
-  box-shadow: var(--inner-highlight), 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--inner-highlight), 0 16px 40px -12px rgba(0, 0, 0, 0.55);
   border-radius: var(--radius-lg);
-  padding: var(--space-xl);
-  transition:
-    border-color var(--duration-normal) var(--ease-out),
-    background-color var(--duration-normal) var(--ease-out),
-    transform var(--duration-normal) var(--ease-out),
-    box-shadow var(--duration-normal) var(--ease-out);
 }
 
-.glass-card:hover {
-  border-color: var(--border-strong);
-  background: var(--bg-card-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--inner-highlight), 0 20px 40px -12px rgba(0, 0, 0, 0.65);
-}
-
-/* ============================================
-   SCROLL ANIMATIONS
-   ============================================ */
-
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition:
-    opacity var(--duration-slow) var(--ease-out),
-    transform var(--duration-slow) var(--ease-out);
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal-delay-1 { transition-delay: 60ms; }
-.reveal-delay-2 { transition-delay: 120ms; }
-.reveal-delay-3 { transition-delay: 180ms; }
-.reveal-delay-4 { transition-delay: 240ms; }
-.reveal-delay-5 { transition-delay: 300ms; }
-
-/* ============================================
-   SCROLLBAR
-   ============================================ */
+/* ============================================================
+   SCROLLBAR & REDUCED MOTION
+   ============================================================ */
 
 ::-webkit-scrollbar {
   width: 6px;
@@ -273,11 +247,18 @@ p {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.26);
 }
 
-@media (max-width: 768px) {
-  .section {
-    padding: var(--space-3xl) var(--space-md);
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

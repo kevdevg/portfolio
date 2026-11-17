@@ -1,81 +1,42 @@
-/**
- * GA4 Custom Event Tracking
- * Sends events to Google Analytics via gtag()
- */
-
-function sendEvent(eventName, params = {}) {
-  if (typeof window.gtag === 'function') {
+function gtagEvent(eventName, params = {}) {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
     window.gtag('event', eventName, params);
   }
 }
 
-// ── Section Views ──
-// Fired when a section scrolls into view
-export function trackSectionView(sectionName) {
-  sendEvent('section_view', {
-    section_name: sectionName,
-  });
+export function trackRegionFocus(regionId, source = 'scroll') {
+  gtagEvent('neural_region_focus', { region_id: regionId, interaction_source: source });
 }
 
-// ── Neuron / Skill Clicks ──
-export function trackNeuronClick(skillId) {
-  sendEvent('neuron_click', {
-    skill_id: skillId,
-  });
+export function trackLanguageSwitch(lang) {
+  gtagEvent('language_switch', { language: lang });
 }
 
-// ── Tech Stack Interactions ──
-export function trackTechFilter(filterName) {
-  sendEvent('tech_filter', {
-    filter_name: filterName,
-  });
-}
-
-export function trackTechHover(techName, category) {
-  sendEvent('tech_hover', {
-    tech_name: techName,
-    tech_category: category,
-  });
-}
-
-// ── Project Interactions ──
-export function trackProjectFilter(filterName) {
-  sendEvent('project_filter', {
-    filter_name: filterName,
-  });
-}
-
-// ── Outbound Links ──
 export function trackOutboundClick(url, label) {
-  sendEvent('outbound_click', {
-    link_url: url,
-    link_label: label,
-  });
+  gtagEvent('outbound_click', { destination_url: url, link_label: label });
 }
 
-// ── Contact Form ──
-export function trackContactSubmit() {
-  sendEvent('contact_submit');
+export function trackEmailCopy() {
+  gtagEvent('email_copy', { method: 'clipboard' });
 }
 
-// ── Scroll Depth ──
-// Call once on page load to track max scroll milestones
 export function initScrollDepthTracking() {
+  if (typeof window === 'undefined') return () => {};
   const milestones = [25, 50, 75, 100];
   const reached = new Set();
 
-  window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
+  const onScroll = () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     if (docHeight <= 0) return;
-
-    const percent = Math.round((scrollTop / docHeight) * 100);
-
+    const pct = Math.round((window.scrollY / docHeight) * 100);
     for (const m of milestones) {
-      if (percent >= m && !reached.has(m)) {
+      if (pct >= m && !reached.has(m)) {
         reached.add(m);
-        sendEvent('scroll_depth', { depth_percent: m });
+        gtagEvent('scroll_depth', { percent_scrolled: m });
       }
     }
-  }, { passive: true });
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  return () => window.removeEventListener('scroll', onScroll);
 }

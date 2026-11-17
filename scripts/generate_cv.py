@@ -9,7 +9,6 @@ Run with:
   uv run --with reportlab python3 generate_cv.py
 """
 
-import shutil
 from pathlib import Path
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
@@ -625,25 +624,18 @@ def build_2page_extended(output_path: Path):
 
 
 def main():
-    base_dir = Path("/Users/kevinguevara/Documents/Me")
-    portfolio_pub = Path("/Users/kevinguevara/porfolio/public")
+    public_dir = Path(__file__).resolve().parent.parent / "public"
+    public_dir.mkdir(parents=True, exist_ok=True)
 
-    cv_1page_path = base_dir / "Kevin_Guevara_CV_1Page_ATS.pdf"
-    cv_main_path = base_dir / "Kevin_Guevara_CV.pdf"
-    cv_2page_path = base_dir / "Kevin_Guevara_CV_2Page_Extended.pdf"
+    cv_main_path = public_dir / "Kevin_Guevara_CV.pdf"
+    cv_extended_path = public_dir / "Kevin_Guevara_CV_Extended.pdf"
 
-    build_1page_ats(cv_1page_path)
-    shutil.copy2(cv_1page_path, cv_main_path)
-    build_2page_extended(cv_2page_path)
-
-    if portfolio_pub.exists():
-        shutil.copy2(cv_1page_path, portfolio_pub / "Kevin_Guevara_CV.pdf")
-        shutil.copy2(cv_2page_path, portfolio_pub / "Kevin_Guevara_CV_Extended.pdf")
+    build_1page_ats(cv_main_path)
+    build_2page_extended(cv_extended_path)
 
     print("Successfully generated:")
     print(f" - {cv_main_path} ({cv_main_path.stat().st_size} bytes)")
-    print(f" - {cv_1page_path} ({cv_1page_path.stat().st_size} bytes)")
-    print(f" - {cv_2page_path} ({cv_2page_path.stat().st_size} bytes)")
+    print(f" - {cv_extended_path} ({cv_extended_path.stat().st_size} bytes)")
 
 
 if __name__ == "__main__":

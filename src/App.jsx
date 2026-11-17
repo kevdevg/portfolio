@@ -1,52 +1,75 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Navbar from './components/Navbar/Navbar';
-import NeuralCanvas from './components/NeuralCanvas/NeuralCanvas';
-import SkillDetail from './components/SkillDetail/SkillDetail';
-import About from './components/About/About';
-import TechStack from './components/TechStack/TechStack';
-import Projects from './components/Projects/Projects';
-import Experience from './components/Experience/Experience';
-import Contact from './components/Contact/Contact';
-import { initScrollDepthTracking, trackNeuronClick } from './utils/analytics';
+import MindJourney from './components/MindJourney/MindJourney';
+import { initScrollDepthTracking, trackLanguageSwitch } from './utils/analytics';
 
-export default function App() {
-  const [activeNeuron, setActiveNeuron] = useState(null);
-
-  // Initialize scroll depth tracking once
-  useEffect(() => {
-    initScrollDepthTracking();
-  }, []);
-
-  const handleNeuronClick = (skillId) => {
-    trackNeuronClick(skillId);
-    setActiveNeuron(prev => prev === skillId ? null : skillId);
-  };
-
-  const handleCloseSkill = () => {
-    setActiveNeuron(null);
-  };
-
-  return (
-    <>
-      <Navbar />
-      <main>
-        <NeuralCanvas
-          onNeuronClick={handleNeuronClick}
-          activeNeuron={activeNeuron}
-        />
-        <About />
-        <TechStack />
-        <Projects />
-        <Experience />
-        <Contact />
-      </main>
-      {activeNeuron && (
-        <SkillDetail
-          skillId={activeNeuron}
-          onClose={handleCloseSkill}
-        />
-      )}
-    </>
-  );
+function getInitialLang() {
+  if (typeof window === 'undefined') return 'en';
+  try {
+    const saved = window.localStorage.getItem('kg_portfolio_lang');
+    if (saved === 'en' || saved === 'es') return saved;
+  } catch {
+    // Ignore storage access errors
+  }
+  return 'en';
 }
 
+export default function App() {
+  const [lang, setLang] = useState(getInitialLang);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const jumpToEndRef = useRef(null);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    try {
+      window.localStorage.setItem('kg_portfolio_lang', lang);
+    } catch {
+      // Ignore storage access errors
+    }
+  }, [lang]);
+
+  useEffect(() => {
+    return initScrollDepthTracking();
+  }, []);
+
+  const handleChangeLang = useCallback((nextLang) => {
+    setLang((prev) => {
+      if (prev === nextLang) return prev;
+      trackLanguageSwitch(nextLang);
+      return nextLang;
+    });
+  }, []);
+
+  const registerJumpToEnd = useCallback((fn) => {
+    jumpToEndRef.current = fn;
+  }, []);
+
+  const handleJumpToEnd = useCallback(() => {
+    if (jumpToEndRef.current) {
+      jumpToEndRef.current();
+    } else {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  }, []);
+
+  return (
+    <div className="mind-shell">
+      <Navbar
+        lang={lang}
+        onChangeLang={handleChangeLang}
+        progress={scrollProgress}
+        onJumpToEnd={handleJumpToEnd}
+      />
+      <main>
+        <MindJourney
+          lang={lang}
+          onProgressChange={setScrollProgress}
+          registerJumpToEnd={registerJumpToEnd}
+        />
+      </main>
+    </div>
+  );
+}
